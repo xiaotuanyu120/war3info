@@ -5,6 +5,25 @@ from django.db import models
 
 # Create your models here.
 
+class Player(models.Model):
+    name = models.CharField(max_length=30, verbose_name=u'选手名称')
+    SEX_CHOICES = (
+        ('F', 'Female'),
+        ('M', 'Male'),
+    )
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES, verbose_name=u'选手性别')
+    age = models.IntegerField(verbose_name=u'年龄')
+    height = models.IntegerField(verbose_name=u'身高')
+    qq = models.IntegerField(verbose_name='QQ粉丝群')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["start_date"]
+        verbose_name_plural = u"选手"
+
+
 class Game(models.Model):
     name = models.CharField(max_length=30, verbose_name=u'比赛名称')
     start_date = models.DateField(u'开始日期')
@@ -13,6 +32,54 @@ class Game(models.Model):
     champion = models.CharField(max_length=30, verbose_name=u'冠军')
     second_place = models.CharField(max_length=30, verbose_name=u'亚军')
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["start_date"]
+        verbose_name_plural = u"比赛"
+
+
+class Stage(models.Model):
+    game = models.ForeignKey(Game, verbose_name=u'比赛名称')
+    name = models.CharField(max_length=30, verbose_name=u'阶段名称')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = u"阶段"
+
+
+class Group(models.Model):
+    stage = models.ForeignKey(Stage, verbose_name=u'阶段名称')
+    name = models.CharField(max_length=30, verbose_name=u'小组名称')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = u"小组"
+
 
 class Battle(models.Model):
-    game = models.ForeignKey(Game, verbose_name=u'比赛名称')
+    group = models.ForeignKey(Group, verbose_name=u'小组名称oreignKey(Player, verbose_name=u'选手1', related_name='player1')
+    player2 = models.ForeignKey(Player, verbose_name=u'选手2', related_name='player2')
+    winner = models.ForeignKey(Player, verbose_name=u'胜者', related_name='winner')
+
+    # def __unicode__(self):
+    #     return self.name
+
+    class Meta:
+        verbose_name_plural = u"对战"
+
+
+class Match(models.Model):
+    battle = models.ForeignKey(Battle, verbose_name=u'阶段名称')
+    name = models.CharField(max_length=30, verbose_name=u'组别名称')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = u"组别"
