@@ -20,7 +20,6 @@ class Player(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["start_date"]
         verbose_name_plural = u"选手"
 
 
@@ -63,7 +62,8 @@ class Group(models.Model):
 
 
 class Battle(models.Model):
-    group = models.ForeignKey(Group, verbose_name=u'小组名称oreignKey(Player, verbose_name=u'选手1', related_name='player1')
+    group = models.ForeignKey(Group, verbose_name=u'小组名称')
+    player1 = models.ForeignKey(Player, verbose_name=u'选手1', related_name='player1')
     player2 = models.ForeignKey(Player, verbose_name=u'选手2', related_name='player2')
     winner = models.ForeignKey(Player, verbose_name=u'胜者', related_name='winner')
 
