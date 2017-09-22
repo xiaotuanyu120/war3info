@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
-
 
 class Player(models.Model):
     name = models.CharField(max_length=30, verbose_name=u'选手名称')
@@ -15,7 +13,7 @@ class Player(models.Model):
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, verbose_name=u'选手性别', default='M')
     age = models.IntegerField(verbose_name=u'年龄')
     height = models.IntegerField(verbose_name=u'身高')
-    qq = models.IntegerField(verbose_name='QQ粉丝群')
+    qq = models.IntegerField(null=True, blank=True, verbose_name='QQ粉丝群')
 
     def __unicode__(self):
         return self.name
